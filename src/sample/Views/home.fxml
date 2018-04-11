@@ -31,6 +31,11 @@
             <Font name="Microsoft New Tai Lue Bold" size="14.0" />
          </font>
       </JFXButton>
+      <Label layoutX="73.0" layoutY="494.0" prefHeight="42.0" prefWidth="221.0" text="By continuing, you are indicating that you" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="80.0" layoutY="524.0" prefHeight="42.0" prefWidth="73.0" text="agree to the" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="150.0" layoutY="524.0" prefHeight="42.0" prefWidth="82.0" text="Privacy Policy" textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
+      <Label layoutX="227.0" layoutY="524.0" prefHeight="42.0" prefWidth="23.0" text="and" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="250.0" layoutY="524.0" prefHeight="42.0" prefWidth="39.0" text="Terms." textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
    </children>
    <effect>
       <DropShadow />
