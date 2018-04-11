@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="rootBorder" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="365.0" style="-fx-background-color: #fff; -fx-background-radius: 50px;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.serverSetupController">
+   <children>
+      <ImageView fitHeight="75.0" fitWidth="73.0" layoutX="146.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/icon2.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="24.0" layoutY="182.0" prefHeight="48.0" prefWidth="318.0" text="Welcome to SHARE" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="24.0">
+         <font>
+            <Font name="Arial" size="23.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="button_create" buttonType="RAISED" disable="true" layoutX="127.0" layoutY="359.0" prefHeight="37.0" prefWidth="112.0" style="-fx-background-color: #0084ff;" text="CONTINUE " textFill="WHITE">
+         <font>
+            <Font name="Microsoft New Tai Lue Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="72.0" layoutY="426.0" prefHeight="42.0" prefWidth="221.0" text="By continuing, you are indicating that you" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="79.0" layoutY="456.0" prefHeight="42.0" prefWidth="73.0" text="agree to the" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="149.0" layoutY="456.0" prefHeight="42.0" prefWidth="82.0" text="Privacy Policy" textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
+      <Label layoutX="226.0" layoutY="456.0" prefHeight="42.0" prefWidth="23.0" text="and" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
+      <Label layoutX="249.0" layoutY="456.0" prefHeight="42.0" prefWidth="39.0" text="Terms." textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
+      <JFXButton fx:id="button_back" layoutX="-4.0" prefHeight="37.0" prefWidth="57.0" text="🔙">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </JFXButton>
+      <JFXPasswordField fx:id="passwordfield_pw" focusColor="#405aa800" labelFloat="true" layoutX="69.0" layoutY="290.0" maxWidth="228.0" minWidth="192.0" prefHeight="36.0" prefWidth="228.0" promptText="Password" style="-fx-border-color: #0887ff; -fx-border-radius: 50PX;" unFocusColor="#4d4d4d00">
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </JFXPasswordField>
+      <JFXButton fx:id="button_create" layoutX="76.0" layoutY="360.0" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CREATE SERVER" textFill="WHITE" />
+      <JFXTextField fx:id="textfield_location" alignment="CENTER" editable="false" focusColor="#0084ff" layoutX="70.0" layoutY="246.0" maxWidth="240.0" minWidth="149.0" prefHeight="32.0" prefWidth="228.0" promptText="Share folder location" unFocusColor="#8d8d8d" />
+      <JFXButton fx:id="button_directoryChooser" layoutX="293.0" layoutY="246.0" prefHeight="32.0" prefWidth="63.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CHOOSE" textFill="WHITE" />
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+</AnchorPane>

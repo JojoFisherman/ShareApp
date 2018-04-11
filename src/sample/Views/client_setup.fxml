@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="rootBorder" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="365.0" style="-fx-background-color: #fff; -fx-background-radius: 50px;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.clientSetupController">
+   <children>
+      <ImageView fitHeight="75.0" fitWidth="73.0" layoutX="146.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/icon2.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="24.0" layoutY="182.0" prefHeight="48.0" prefWidth="318.0" text="Welcome to SHARE" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="24.0">
+         <font>
+            <Font name="Arial" size="23.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="-4.0" prefHeight="37.0" prefWidth="57.0" text="🔙">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="77.0" layoutY="476.0" prefHeight="36.0" prefWidth="213.0" text="Privacy Policy &amp; Terms of Service" textFill="#0ab98d" underline="true" />
+      <JFXButton fx:id="button_connect" layoutX="76.0" layoutY="405.0" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CONNECT TO SERVER" textFill="WHITE" />
+      <JFXTextField fx:id="textfield_ip" focusColor="#405aa800" labelFloat="true" layoutX="70.0" layoutY="290.0" maxWidth="228.0" minWidth="184.0" prefHeight="36.0" prefWidth="228.0" promptText="IP address" style="-fx-border-color: #0887ff; -fx-border-radius: 50px;" unFocusColor="#0a89ff00">
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </JFXTextField>
+      <JFXPasswordField fx:id="passwordfield_pw" focusColor="#405aa800" labelFloat="true" layoutX="69.0" layoutY="337.0" maxWidth="228.0" minWidth="192.0" prefHeight="36.0" prefWidth="228.0" promptText="Password" style="-fx-border-color: #0887ff; -fx-border-radius: 50PX;" unFocusColor="#4d4d4d00">
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </JFXPasswordField>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+</AnchorPane>
