@@ -78,12 +78,16 @@ public class clientSetupController implements Initializable {
     fadeTransition1.setToValue(1);
     fadeTransition1.play();
     fadeTransition1.setOnFinished(event1 -> {
-      try {
-        fileClient = new FileClient(ip, 9001, pw);
-        boolean result = fileClient.sendPassword(pw);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      new Thread(() -> {
+        try {
+          fileClient = new FileClient(ip, 9001, pw);
+          System.out.println("result" + fileClient.sendPassword(pw));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }).start();
+
+      // boolean result = fileClient.sendPassword(pw);
     });
 
 
