@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 public class clientSetupController implements Initializable {
 
   @FXML
+  private Pane rootPane;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -19,6 +20,16 @@ public class clientSetupController implements Initializable {
 
   }
 
+  @FXML
+  private void backAction() {
+    FadeTransition fadeTransition=new FadeTransition(Duration.seconds(0.5),rootPane);
+    fadeTransition.setFromValue(1);
+    fadeTransition.setToValue(0);
+    fadeTransition.play();
+    fadeTransition.setOnFinished(evet -> {
+      rootPane.setVisible(false);
+    });
 
+  }
 
 }

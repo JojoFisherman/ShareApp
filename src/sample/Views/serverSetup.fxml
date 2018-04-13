@@ -33,7 +33,7 @@
       <Label layoutX="149.0" layoutY="456.0" prefHeight="42.0" prefWidth="82.0" text="Privacy Policy" textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
       <Label layoutX="226.0" layoutY="456.0" prefHeight="42.0" prefWidth="23.0" text="and" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
       <Label layoutX="249.0" layoutY="456.0" prefHeight="42.0" prefWidth="39.0" text="Terms." textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
-      <JFXButton fx:id="button_back" layoutX="-4.0" prefHeight="37.0" prefWidth="57.0" text="🔙">
+      <JFXButton fx:id="button_back" layoutX="-4.0" onAction="#backAction" prefHeight="37.0" prefWidth="57.0" text="🔙">
          <font>
             <Font size="21.0" />
          </font>
@@ -43,9 +43,9 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </JFXPasswordField>
-      <JFXButton fx:id="button_create" layoutX="76.0" layoutY="360.0" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CREATE SERVER" textFill="WHITE" />
-      <JFXTextField fx:id="textfield_location" alignment="CENTER" editable="false" focusColor="#0084ff" layoutX="70.0" layoutY="246.0" maxWidth="240.0" minWidth="149.0" prefHeight="32.0" prefWidth="228.0" promptText="Share folder location" unFocusColor="#8d8d8d" />
-      <JFXButton fx:id="button_directoryChooser" layoutX="293.0" layoutY="246.0" prefHeight="32.0" prefWidth="63.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CHOOSE" textFill="WHITE" />
+      <JFXButton fx:id="button_create" layoutX="76.0" layoutY="360.0" onAction="#createServer" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CREATE SERVER" textFill="WHITE" />
+      <JFXTextField fx:id="textfield_location" alignment="CENTER" focusColor="#0084ff" layoutX="70.0" layoutY="246.0" maxWidth="240.0" minWidth="149.0" prefHeight="32.0" prefWidth="228.0" promptText="Share folder location" unFocusColor="#8d8d8d" />
+      <JFXButton fx:id="button_choose" layoutX="293.0" layoutY="246.0" onAction="#chooseDirectory" prefHeight="32.0" prefWidth="63.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CHOOSE" textFill="WHITE" />
    </children>
    <effect>
       <DropShadow />
