@@ -29,7 +29,7 @@
          </font>
       </JFXButton>
       <JFXButton layoutX="77.0" layoutY="476.0" prefHeight="36.0" prefWidth="213.0" text="Privacy Policy &amp; Terms of Service" textFill="#0ab98d" underline="true" />
-      <JFXButton fx:id="button_connect" layoutX="76.0" layoutY="405.0" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CONNECT TO SERVER" textFill="WHITE" />
+      <JFXButton fx:id="button_connect" layoutX="76.0" layoutY="405.0" onAction="#connectServer" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="CONNECT TO SERVER" textFill="WHITE" />
       <JFXTextField fx:id="textfield_ip" focusColor="#405aa800" labelFloat="true" layoutX="70.0" layoutY="290.0" maxWidth="228.0" minWidth="184.0" prefHeight="36.0" prefWidth="228.0" promptText="IP address" style="-fx-border-color: #0887ff; -fx-border-radius: 50px;" unFocusColor="#0a89ff00">
          <padding>
             <Insets left="10.0" top="10.0" />

@@ -23,11 +23,6 @@
             <Font name="Arial" size="23.0" />
          </font>
       </Label>
-      <JFXButton fx:id="button_create" buttonType="RAISED" disable="true" layoutX="127.0" layoutY="359.0" prefHeight="37.0" prefWidth="112.0" style="-fx-background-color: #0084ff;" text="CONTINUE " textFill="WHITE">
-         <font>
-            <Font name="Microsoft New Tai Lue Bold" size="13.0" />
-         </font>
-      </JFXButton>
       <Label layoutX="72.0" layoutY="426.0" prefHeight="42.0" prefWidth="221.0" text="By continuing, you are indicating that you" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
       <Label layoutX="79.0" layoutY="456.0" prefHeight="42.0" prefWidth="73.0" text="agree to the" textAlignment="CENTER" textFill="#9f9f9f" wrapText="true" />
       <Label layoutX="149.0" layoutY="456.0" prefHeight="42.0" prefWidth="82.0" text="Privacy Policy" textAlignment="CENTER" textFill="#0084ff" wrapText="true" />
