@@ -5,11 +5,17 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.Socket;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -81,9 +87,48 @@ public class clientSetupController implements Initializable {
       new Thread(() -> {
         try {
           fileClient = new FileClient(ip, 9001, pw);
+          boolean result = fileClient.sendPassword(pw);
+          if (result) {
+            Platform.runLater(
+                () -> {
+                  connectingPane.setVisible(false);
+                  FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/clientMain.fxml"));
+                  StackPane pane = null;
+                  try {
+                    pane = loader.load();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                  Scene scene = new Scene(pane);
+
+                  Stage stage = (Stage) rootPane.getScene().getWindow();
+                  stage.setScene(scene);
+                }
+            );
+          }
+          else {
+            connectingPane.setVisible(false);
+            Platform.runLater(
+                () -> {
+                  Alert alert = new Alert(AlertType.INFORMATION);
+                  alert.setHeaderText("Unable to connect!");
+                  alert.setContentText("The server IP or password is wrong, please try again");
+                  alert.showAndWait();
+                }
+            );
+          }
           System.out.println("result" + fileClient.sendPassword(pw));
         } catch (IOException e) {
-          e.printStackTrace();
+          connectingPane.setVisible(false);
+          Platform.runLater(
+              () -> {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setHeaderText("Unable to connect!");
+                alert.setContentText("The server IP or password is wrong, please try again");
+                alert.showAndWait();
+              }
+          );
+
         }
       }).start();
 

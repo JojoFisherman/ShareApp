@@ -6,16 +6,26 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
  * Created by Vincent on 3/20/2018.
  */
 public class FileClient {
+
+  private String ip;
+  private int port;
+  private String pw;
+
   Socket socket = null;
 
   public FileClient(String ip, int port, String pw) throws IOException {
-    socket = new Socket(ip, port);
+    this.ip = ip;
+    this.port = port;
+    this.pw = pw;
+
+    // socket = new Socket(ip, port);
     // DataInputStream in = new DataInputStream(socket.getInputStream());
     // DataOutputStream out = new DataOutputStream(socket.getOutputStream());
     // String filename = sendFilename(out);
@@ -25,23 +35,23 @@ public class FileClient {
     // socket.close();
   }
 
-  public boolean sendPassword(String pw) {
-    return this.sendPassword(pw, socket);
-  }
 
-  boolean sendPassword(String pw, Socket socket) {
+  public boolean sendPassword(String pw) {
     boolean result = false;
-    try(DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-    DataInputStream in = new DataInputStream(socket.getInputStream())) {
+    try (Socket socket = new Socket(ip, port);
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        DataInputStream in = new DataInputStream(socket.getInputStream())) {
+      result = false;
       out.writeInt(001);
       out.writeInt(pw.length());
       out.writeBytes(pw);
 
       // Receive result
-       result = in.readBoolean();
+      result = in.readBoolean();
 
     } catch (IOException e) {
-      e.printStackTrace();
+      // server ip incorrect
+      return false;
     }
 
     System.out.println("the result is :" + result);
