@@ -17,17 +17,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import org.omg.CORBA.INITIALIZE;
 import sample.Model.SFile;
 import sample.Util.FileClient;
@@ -115,6 +120,17 @@ public class clientMainController implements Initializable {
     table_files.setShowRoot(false);
 
 
+    table_files.setRowFactory( e -> {
+      TreeTableRow<SFile> row = new TreeTableRow<>();
+      row.setOnMouseClicked(event -> {
+        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+          SFile rowData = row.getItem();
+          System.out.println(rowData.getName());
+          
+        }
+      });
+      return row;
+    });
   }
 
   public void setFileClient(FileClient fileClient) {
