@@ -39,7 +39,7 @@
                                     <FontAwesomeIconView fill="#757575" glyphName="EYE" size="16.0" wrappingWidth="40.0" />
                                  </graphic>
                               </JFXButton>
-                              <JFXButton prefHeight="59.0" prefWidth="189.0" styleClass="side-buttons" text="Download" textFill="#757575" GridPane.rowIndex="1">
+                              <JFXButton prefHeight="59.0" prefWidth="189.0" styleClass="side-buttons" text="Downloading" textFill="#757575" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>
@@ -61,13 +61,15 @@
                   </AnchorPane>
                   <AnchorPane fx:id="holderPane" prefHeight="680.0" prefWidth="1100.0">
                      <children>
-                        <JFXTreeTableView fx:id="table_files" layoutX="237.0" layoutY="96.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <JFXTreeTableView fx:id="table_files" layoutX="237.0" layoutY="96.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
                               <TreeTableColumn fx:id="column_type" prefWidth="99.0" text="Type" />
                               <TreeTableColumn fx:id="column_name" prefWidth="553.0" text="Name" />
                               <TreeTableColumn fx:id="column_size" prefWidth="85.0" text="Size" />
                            </columns>
                         </JFXTreeTableView>
+                        <JFXButton fx:id="button_create" layoutX="646.0" layoutY="577.0" onAction="#downloadFiles" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="Download" textFill="WHITE" />
+                        <JFXButton fx:id="button_create1" layoutX="558.0" layoutY="577.0" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="Back" textFill="WHITE" />
                      </children></AnchorPane>
                </children>
             </HBox>

@@ -2,6 +2,7 @@ package sample.Util;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 public class FileServer {
 
@@ -16,7 +17,6 @@ public class FileServer {
     this.commandPrompt = new CommandPrompt(path);
 
     while (true) {
-      System.out.println("Listening at port " + port);
       Socket cSocket = sSocket.accept();
 
       new Thread(() -> {
@@ -42,93 +42,108 @@ public class FileServer {
 
       // Change directory and list files
       case 002:
+        String path = receiveString(in);
+        sendFileList(out, path);
         break;
 
-      // Download a file
+      // Download
       case 003:
+        String filepath = receiveString(in);
+        sendFile(out, filepath);
         break;
 
-      // Download an entire folder
-      case 004:
-        break;
     }
     in.close();
     out.close();
   }
 
-  private void serve(Socket socket) throws IOException {
+  private void authentication(DataInputStream in, DataOutputStream out) throws IOException {
+    String pw = receiveString(in);
+    out.writeBoolean(isPwCorrect(pw));
 
-
-    // String filename;
-    // DataOutputStream out =
-    //     new DataOutputStream(socket.getOutputStream());
-    // filename = receiveFilename(in);
-    // sendFile(out, filename);
-    // in.close();
-    // out.close();
   }
 
-  private String receiveFilename(DataInputStream in) throws IOException {
+
+  /**
+   *
+   * @param out
+   * @param path
+   * @throws IOException
+   */
+  private void sendFileList(DataOutputStream out, String path) throws IOException {
+    // commandPrompt.changeDir(path);
+    List<String> files = commandPrompt.listFiles(path, true);
+    // write how many files
+    out.writeLong(files.size());
+    for (String file : files) {
+      out.writeLong(file.length());
+      out.writeBytes(file);
+    }
+
+  }
+
+  private void sendFilenameList(DataOutputStream out, String path) throws IOException {
+    // commandPrompt.changeDir(path);
+    List<String> filenames = commandPrompt.listFiles(path, false);
+    // write how many files
+    out.writeLong(filenames.size());
+    for (String filename : filenames) {
+      out.writeLong(filename.length());
+      out.writeBytes(filename);
+    }
+
+  }
+
+
+  private String receiveString(DataInputStream in) throws IOException {
     byte[] buffer = new byte[1024];
     int len;
     long counter = 0;
-    long filesize = in.readLong();
-    String filename = "";
-    while (counter < filesize) {
-      len = in.read(buffer, 0, buffer.length);
+    long stringSize = in.readLong();
+    String str = "";
+    while (counter < stringSize) {
+      len = in.read(buffer, 0, (int) Math.min(buffer.length, stringSize - counter));
       counter += len;
-      filename += new String(buffer, 0, len);
+      str += new String(buffer, 0, len);
     }
-    return filename;
+    return str;
   }
 
 
   private void sendFile(DataOutputStream out, String filename) throws IOException {
-    File file = new File(filename);
-    FileInputStream in = new FileInputStream(file);
-    byte[] buffer = new byte[1024];
-    int len;
-    long counter = 0;
-    long filesize = file.length();
-    out.writeLong(filesize);
-    while (counter < filesize) {
-      len = in.read(buffer, 0, buffer.length);
-      counter += len;
-      out.write(buffer, 0, len);
-      out.flush();
+    File file = new File(path + "\\" + filename);
+    if (file.isDirectory()) {
+      sendFilenameList(out, file.getCanonicalPath());
+    } else {
+      out.writeLong(-1);
+      FileInputStream in = new FileInputStream(file);
+      byte[] buffer = new byte[1024];
+      int len;
+      long counter = 0;
+      long filesize = file.length();
+      out.writeLong(filesize);
+      while (counter < filesize) {
+        len = in.read(buffer, 0, buffer.length);
+        counter += len;
+        out.write(buffer, 0, len);
+        out.flush();
+      }
     }
-
   }
 
-  private  boolean isPwCorrect(String inputPassword) {
+  private boolean isPwCorrect(String inputPassword) {
     return inputPassword.equals(password);
   }
 
-  private void authentication(DataInputStream in, DataOutputStream out) throws IOException {
-    String pw = "";
-    int len = 0;
-    byte[] buffer = new byte[1024];
-    int count = 0;
-    int size = in.readInt();
-    while (count < size) {
-      len = in.read(buffer, 0, Math.min(buffer.length, size - count));
-      pw += new String(buffer, 0, len);
-      count += len;
+
+  public static void main(String[] args) {
+    try {
+      FileServer fileServer = new FileServer(9001, "C:/Users/Vincent/Desktop/shareFolder", "123");
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    System.out.println("pw:" + pw);
-    System.out.println("isCorrect:" + isPwCorrect(pw));
-    out.writeBoolean(isPwCorrect(pw));
-
-
-
-
-    // while (in.available() > 0) {
-    //   len = in.readInt();
-    //   in.read(buffer, 0, len);
-    //   pw += new String(buffer, 0, len);
-    // }
-
   }
+
 }
 

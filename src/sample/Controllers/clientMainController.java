@@ -3,15 +3,21 @@ package sample.Controllers;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
@@ -21,8 +27,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import org.omg.CORBA.INITIALIZE;
 import sample.Model.SFile;
+import sample.Util.FileClient;
 
 public class clientMainController implements Initializable {
 
@@ -45,9 +53,20 @@ public class clientMainController implements Initializable {
   private TreeTableColumn<SFile, Number> column_size;
 
   private ObservableList<SFile> files = FXCollections.observableArrayList();
+  private FileClient fileClient;
+
+  public void setFiles(ObservableList<SFile> files) {
+    this.files = files;
+    TreeItem<SFile> root = new RecursiveTreeItem<SFile>(files, RecursiveTreeObject::getChildren);
+    table_files.setRoot(root);
+    table_files.setShowRoot(false);
+  }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    table_files.getSelectionModel().setSelectionMode(
+        SelectionMode.MULTIPLE
+    );
     column_name.setCellValueFactory(cellData -> cellData.getValue().getValue().nameProperty());
     column_size.setCellValueFactory(cellData -> cellData.getValue().getValue().sizeProperty());
     column_type.setCellValueFactory(cellData -> cellData.getValue().getValue().typeProperty());
@@ -73,17 +92,60 @@ public class clientMainController implements Initializable {
       return cell;
     });
 
+    column_size.setCellFactory(column -> {
+      TreeTableCell<SFile, Number> cell = new TreeTableCell<SFile, Number>() {
+        public void updateItem(Number item, boolean empty) {
+          if (item != null && item.intValue() != 0) {
+            setText(item.toString() + " KB");
+          } else {
+            setText(null);
+          }
+        }
+      };
+      return cell;
+    });
+
     // sample data
     // files.add(new SFile("d", "school", 50));
     // files.add(new SFile("f", "lab01.pdf", 27));
     // for (int i = 0; i < 50; i++)
     //   files.add(new SFile("f", "lab01.pdf", 27));
-    // TreeItem<SFile> root = new RecursiveTreeItem<SFile>(files, RecursiveTreeObject::getChildren);
-    // table_files.setRoot(root);
-    // table_files.setShowRoot(false);
+    TreeItem<SFile> root = new RecursiveTreeItem<SFile>(files, RecursiveTreeObject::getChildren);
+    table_files.setRoot(root);
+    table_files.setShowRoot(false);
 
 
   }
 
+  public void setFileClient(FileClient fileClient) {
+    this.fileClient = fileClient;
+  }
 
+  @FXML
+  private void downloadFiles() {
+    String selectedDirectory = getFolder();
+
+    ObservableList<TreeItem<SFile>> selectedItems = table_files.getSelectionModel()
+        .getSelectedItems();
+    List<String> filenames = new ArrayList<>();
+
+    for (TreeItem<SFile> temp : selectedItems) {
+      filenames.add(temp.getValue().getName());
+
+      try {
+        fileClient.receiveFiles(filenames, selectedDirectory);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+
+    }
+  }
+
+  private String getFolder() {
+    DirectoryChooser chooser = new DirectoryChooser();
+    chooser.setTitle("SHARE");
+    File selectedDirectory = chooser.showDialog(rootPane.getScene().getWindow());
+    return selectedDirectory.getAbsolutePath();
+  }
 }

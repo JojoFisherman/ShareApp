@@ -75,7 +75,7 @@ public class serverSetupController implements Initializable {
   @FXML
   private void chooseDirectory() {
     DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("JavaFX Projects");
+    chooser.setTitle("SHARE");
     // File defaultDirectory = new File("c:/dev/javafx");
     // chooser.setInitialDirectory(defaultDirectory);
     File selectedDirectory = chooser.showDialog(rootPane.getScene().getWindow());

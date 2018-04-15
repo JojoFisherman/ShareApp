@@ -1,4 +1,5 @@
 package sample.Controllers;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -6,6 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import sample.Model.SFile;
 import sample.Util.FileClient;
 
 public class clientSetupController implements Initializable {
@@ -63,7 +66,7 @@ public class clientSetupController implements Initializable {
 
   @FXML
   private void backAction() {
-    FadeTransition fadeTransition=new FadeTransition(Duration.seconds(0.5),rootPane);
+    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), rootPane);
     fadeTransition.setFromValue(1);
     fadeTransition.setToValue(0);
     fadeTransition.play();
@@ -87,57 +90,65 @@ public class clientSetupController implements Initializable {
       new Thread(() -> {
         try {
           fileClient = new FileClient(ip, 9001, pw);
-          boolean result = fileClient.sendPassword(pw);
-          if (result) {
-            Platform.runLater(
-                () -> {
-                  connectingPane.setVisible(false);
-                  FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/clientMain.fxml"));
-                  StackPane pane = null;
-                  try {
-                    pane = loader.load();
-                  } catch (IOException e) {
-                    e.printStackTrace();
-                  }
-                  Scene scene = new Scene(pane);
-
-                  Stage stage = (Stage) rootPane.getScene().getWindow();
-                  stage.setScene(scene);
-                }
-            );
+          if (fileClient.requestAuthentication(pw)) {
+            switchClientMainPage();
+          } else {
+            displayErrorMsg();
           }
-          else {
-            connectingPane.setVisible(false);
-            Platform.runLater(
-                () -> {
-                  Alert alert = new Alert(AlertType.INFORMATION);
-                  alert.setHeaderText("Unable to connect!");
-                  alert.setContentText("The server IP or password is wrong, please try again");
-                  alert.showAndWait();
-                }
-            );
-          }
-          System.out.println("result" + fileClient.sendPassword(pw));
         } catch (IOException e) {
-          connectingPane.setVisible(false);
-          Platform.runLater(
-              () -> {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setHeaderText("Unable to connect!");
-                alert.setContentText("The server IP or password is wrong, please try again");
-                alert.showAndWait();
-              }
-          );
-
+          displayErrorMsg();
         }
       }).start();
 
-      // boolean result = fileClient.sendPassword(pw);
     });
 
 
   }
 
+  private void switchClientMainPage() {
+    Platform.runLater(
+        () -> {
+          ObservableList<SFile> files = null;
+          try {
+            files = fileClient.requestFileList("");
+          } catch (IOException e) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setHeaderText("Server error!");
+            alert.setContentText("The server may have been shut down! ");
+            alert.showAndWait();
+          }
+
+          connectingPane.setVisible(false);
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/clientMain.fxml"));
+          StackPane pane = null;
+          try {
+            pane = loader.load();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+
+          clientMainController ctrl = loader.getController();
+          ctrl.setFiles(files);
+          ctrl.setFileClient(fileClient);
+          Scene scene = new Scene(pane);
+          Stage stage = (Stage) rootPane.getScene().getWindow();
+          stage.setScene(scene);
+        }
+    );
+  }
+
+
+  private void displayErrorMsg() {
+    connectingPane.setVisible(false);
+    Platform.runLater(
+        () -> {
+          Alert alert = new Alert(AlertType.INFORMATION);
+          alert.setHeaderText("Unable to connect!");
+          alert.setContentText("The server IP or password is wrong, please try again");
+          alert.showAndWait();
+        }
+    );
+  }
 
 
 }

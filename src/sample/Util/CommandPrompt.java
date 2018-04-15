@@ -3,8 +3,11 @@ package sample.Util;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
+import sample.Model.SFile;
 
 public class CommandPrompt {
 	File currentDir;
@@ -34,7 +37,7 @@ public class CommandPrompt {
 			changeDir(option);
 			break;
 		case "dir":
-			listFiles(option);
+			listFiles(option, true);
 			break;
 		case "freespace":
 			msg = String.format("The free space is %,d bytes.", checkFreespace(option));
@@ -79,39 +82,58 @@ public class CommandPrompt {
 		currentDir = dir;
 	}
 
-	private String getInfo(File f) {
-		Date date = new Date(f.lastModified());
-		String ld = new SimpleDateFormat("MMM dd, yyyy").format(date);
-		if (f.isFile()) {
-			return String.format("%dKB\t%s\t%s", (int) Math.ceil((float) f.length() / 1024), ld, f.getName());
-		} else
-			return String.format("<DIR>\t%s\t%s", ld, f.getName());
+	private String getInfo(File f, boolean isFullInfo) {
+		if (isFullInfo) {
+			if (f.isFile()) {
+				return String
+						.format("%s$%s$%d", "f", f.getName(), (int) Math.ceil((float) f.length() / 1024));
+			} else {
+				return String.format("%s$%s$%d", "d", f.getName(), 0);
+			}
+		}
+		else {
+			if (f.isFile()) {
+				return f.getName();
+			} else {
+				return f.getName();
+			}
+		}
 	}
 
 
-	public void listFiles(String path) {
+	public List<String> listFiles(String path, boolean isFullInfo) {
 		File dir;
+		List <String> res = new ArrayList<>();
 
-		if (path == null)
+		if (path == null || path.equals(""))
 			dir = currentDir;
 		else
 			dir = new File(path);
 		
 		if (!dir.exists()) {
 			System.out.println("File / directory does not exist.\n" + dir);
-			return;
+			return null;
 		}
 
 		if (dir.isFile())
-			System.out.println(getInfo(dir));
+			System.out.println(getInfo(dir, isFullInfo));
 		else
 		{
 			File[] fileList = dir.listFiles();
-			String info = "";
-			for (int i = 0; i < fileList.length; i++)
-				info += getInfo(fileList[i]) + "\n";
-			System.out.println(info);
-		}		
+			for (int i = 0; i < fileList.length; i++) {
+				res.add(getInfo(fileList[i], isFullInfo));
+			}
+		}
+		return res;
+	}
+
+	public static void main(String [] args){
+		CommandPrompt cp = new CommandPrompt();
+		List<String> files = cp.listFiles("C:\\Users\\Vincent\\Desktop\\shareFolder", true);
+		for (String file : files) {
+			System.out.println(file);
+		}
+
 	}
 
 
