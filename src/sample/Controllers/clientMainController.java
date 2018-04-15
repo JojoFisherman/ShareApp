@@ -130,15 +130,13 @@ public class clientMainController implements Initializable {
           SFile rowData = row.getItem();
           String filename = rowData.getName();
           // System.out.println(rowData.getName());
-          try {
-            ObservableList<SFile> files = fileClient.requestFileList(filename);
-            System.out.println("files in " + filename);
-            for (SFile file : files) {
-              System.out.println("\t\t" + file.getName());
+          if (rowData.getType().equals("d")){
+            try {
+              ObservableList<SFile> files = fileClient.requestFileList(filename);
+              this.setFiles(files);
+            } catch (IOException e1) {
+              e1.printStackTrace();
             }
-            this.setFiles(files);
-          } catch (IOException e1) {
-            e1.printStackTrace();
           }
 
         }
@@ -177,5 +175,18 @@ public class clientMainController implements Initializable {
     chooser.setTitle("SHARE");
     File selectedDirectory = chooser.showDialog(rootPane.getScene().getWindow());
     return selectedDirectory.getAbsolutePath();
+  }
+
+
+  @FXML
+  private void goPreviousFolder() {
+    try {
+      ObservableList<SFile> files = fileClient.requestFileList("..");
+      this.setFiles(files);
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
+
+
   }
 }

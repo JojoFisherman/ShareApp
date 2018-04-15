@@ -29,7 +29,7 @@ public class FileClient {
     this.port = port;
     this.pw = pw;
     // this.currentRelativePath = "";
-    this.currentRelativePath = new File("");
+    this.currentRelativePath = null;
 
   }
 
@@ -45,13 +45,12 @@ public class FileClient {
     // }
     // System.out.println("client's current path: " + currentRelativePath);
 
-    if (currentRelativePath.getPath().equals(""))
+    if (currentRelativePath == null)
       currentRelativePath = new File(path);
     else {
       currentRelativePath = new File(currentRelativePath.getPath() + "\\" + path);
     }
 
-    System.out.println("client's current path: " + currentRelativePath.getPath());
 
 
     out.writeInt(002);

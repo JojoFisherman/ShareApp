@@ -69,7 +69,7 @@
                            </columns>
                         </JFXTreeTableView>
                         <JFXButton fx:id="button_create" layoutX="646.0" layoutY="577.0" onAction="#downloadFiles" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="Download" textFill="WHITE" />
-                        <JFXButton fx:id="button_create1" layoutX="558.0" layoutY="577.0" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="Back" textFill="WHITE" />
+                        <JFXButton fx:id="button_create1" layoutX="558.0" layoutY="577.0" onAction="#goPreviousFolder" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #0887ff; -fx-background-radius: 50PX;" text="Back" textFill="WHITE" />
                      </children></AnchorPane>
                </children>
             </HBox>
