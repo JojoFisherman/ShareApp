@@ -70,9 +70,9 @@ public class FileServer {
    * @param path
    * @throws IOException
    */
-  private void sendFileList(DataOutputStream out, String path) throws IOException {
+  private void sendFileList(DataOutputStream out, String relativepath) throws IOException {
     // commandPrompt.changeDir(path);
-    List<String> files = commandPrompt.listFiles(path, true);
+    List<String> files = commandPrompt.listFiles(path + "\\" + relativepath, true);
     // write how many files
     out.writeLong(files.size());
     for (String file : files) {

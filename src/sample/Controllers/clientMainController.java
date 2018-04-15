@@ -91,6 +91,9 @@ public class clientMainController implements Initializable {
               imageview.setImage(fileIcon);
             }
           }
+          else {
+            imageview.setImage(null);
+          }
         }
       };
       cell.setGraphic(imageview);
@@ -125,8 +128,19 @@ public class clientMainController implements Initializable {
       row.setOnMouseClicked(event -> {
         if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
           SFile rowData = row.getItem();
-          System.out.println(rowData.getName());
-          
+          String filename = rowData.getName();
+          // System.out.println(rowData.getName());
+          try {
+            ObservableList<SFile> files = fileClient.requestFileList(filename);
+            System.out.println("files in " + filename);
+            for (SFile file : files) {
+              System.out.println("\t\t" + file.getName());
+            }
+            this.setFiles(files);
+          } catch (IOException e1) {
+            e1.printStackTrace();
+          }
+
         }
       });
       return row;

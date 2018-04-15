@@ -21,12 +21,15 @@ public class FileClient {
   private String ip;
   private int port;
   private String pw;
-
+  // private String currentRelativePath;
+  private File currentRelativePath;
 
   public FileClient(String ip, int port, String pw) throws IOException {
     this.ip = ip;
     this.port = port;
     this.pw = pw;
+    // this.currentRelativePath = "";
+    this.currentRelativePath = new File("");
 
   }
 
@@ -35,10 +38,25 @@ public class FileClient {
     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
     DataInputStream in = new DataInputStream(socket.getInputStream());
 
-    out.writeInt(002);
-    out.writeLong(path.length());
-    out.writeBytes(path);
+    // if (currentRelativePath.getPath() == 0) {
+    //   currentRelativePath += path;
+    // } else {
+    //   currentRelativePath += "\\" + path;
+    // }
+    // System.out.println("client's current path: " + currentRelativePath);
 
+    if (currentRelativePath.getPath().equals(""))
+      currentRelativePath = new File(path);
+    else {
+      currentRelativePath = new File(currentRelativePath.getPath() + "\\" + path);
+    }
+
+    System.out.println("client's current path: " + currentRelativePath.getPath());
+
+
+    out.writeInt(002);
+    out.writeLong(currentRelativePath.getPath().length());
+    out.writeBytes(currentRelativePath.getPath());
 
     return receiveFileList(in);
   }
@@ -73,7 +91,7 @@ public class FileClient {
     return str;
   }
 
-  public boolean requestAuthentication (String pw) {
+  public boolean requestAuthentication(String pw) {
     boolean result = false;
     try (Socket socket = new Socket(ip, port);
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -100,13 +118,10 @@ public class FileClient {
   }
 
   /**
-   *
    * @param filenames a list that contains the names of all files to download
-   * @param topath
-   * @throws IOException
    */
   public void receiveFiles(List<String> filenames, String topath) throws IOException {
-    for (String filename : filenames){
+    for (String filename : filenames) {
       Socket socket = new Socket(ip, port);
       new Thread(() -> {
         try {
@@ -127,11 +142,8 @@ public class FileClient {
     DataInputStream in = new DataInputStream(socket.getInputStream());
     long filecount = in.readLong();
 
-
     // Base case: file count = -1
     if (filecount == -1) {
-
-
 
       byte[] buffer = new byte[1024];
       long count = 0, size;
@@ -158,14 +170,12 @@ public class FileClient {
     // It's a directory.
     else {
 
-
-
       List<String> filenames = new ArrayList<>();
-      for ( long i = 0; i < filecount; i++){
+      for (long i = 0; i < filecount; i++) {
         String temp = filepath + "\\" + receiveString(in);
         filenames.add(temp);
       }
-      receiveFiles(filenames, topath) ;
+      receiveFiles(filenames, topath);
     }
     socket.close();
   }
