@@ -86,9 +86,9 @@ public class CommandPrompt {
 		if (isFullInfo) {
 			if (f.isFile()) {
 				return String
-						.format("%s$%s$%d", "f", f.getName(), (int) Math.ceil((float) f.length() / 1024));
+						.format("%s$%s$%d", "f", f.getName(), f.length());
 			} else {
-				return String.format("%s$%s$%d", "d", f.getName(), 0);
+				return String.format("%s$%s$%d", "d", f.getName(), getFolderSize(f));
 			}
 		}
 		else {
@@ -127,12 +127,32 @@ public class CommandPrompt {
 		return res;
 	}
 
-	public static void main(String [] args){
-		CommandPrompt cp = new CommandPrompt();
-		List<String> files = cp.listFiles("C:\\Users\\Vincent\\Desktop\\shareFolder", true);
-		for (String file : files) {
-			System.out.println(file);
+	// Get Folder Size
+	private long getFolderSize(File folder) {
+		long size = 0;
+		File[] files = folder.listFiles();
+
+
+		for (File file : files) {
+			if (file.isFile()) {
+				size += file.length();
+			}
+			else {
+				size += getFolderSize(file);
+			}
 		}
+		return size;
+	}
+
+
+	public static void main(String [] args) throws IOException {
+		CommandPrompt cp = new CommandPrompt();
+		System.out.println(cp.getFolderSize(new File("C:\\Users\\Vincent\\Desktop\\shareFolder"))/1000);
+		System.out.println(cp.checkFreespace("C:\\Users\\Vincent\\Desktop\\shareFolder")/1000000);
+		// List<String> files = cp.listFiles("C:\\Users\\Vincent\\Desktop\\shareFolder", true);
+		// for (String file : files) {
+		// 	System.out.println(file);
+		// }
 
 	}
 

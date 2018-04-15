@@ -103,8 +103,18 @@ public class clientMainController implements Initializable {
     column_size.setCellFactory(column -> {
       TreeTableCell<SFile, Number> cell = new TreeTableCell<SFile, Number>() {
         public void updateItem(Number item, boolean empty) {
-          if (item != null && item.intValue() != 0) {
-            setText(item.toString() + " KB");
+          if (item != null) {
+            int value = item.intValue();
+            if (value >= Math.pow(1024,3)){
+              setText(String.format("%.2fGB", (float) value / Math.pow(1024,3)));
+
+            }
+            else if (value >= Math.pow(1024,2)*10) {
+              setText(Integer.toString((int) Math.ceil((float) value / Math.pow(1024,2))) + "MB");
+            }
+            else {
+              setText(Integer.toString((int) Math.ceil((float) value / 1024)) + "KB");
+            }
           } else {
             setText(null);
           }

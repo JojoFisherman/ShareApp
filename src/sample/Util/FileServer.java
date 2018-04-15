@@ -2,6 +2,7 @@ package sample.Util;
 
 import java.io.*;
 import java.net.*;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class FileServer {
@@ -72,6 +73,8 @@ public class FileServer {
    */
   private void sendFileList(DataOutputStream out, String relativepath) throws IOException {
     // commandPrompt.changeDir(path);
+
+
     List<String> files = commandPrompt.listFiles(path + "\\" + relativepath, true);
     // write how many files
     out.writeLong(files.size());

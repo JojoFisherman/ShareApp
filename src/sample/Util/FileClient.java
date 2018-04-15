@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -22,14 +24,14 @@ public class FileClient {
   private int port;
   private String pw;
   // private String currentRelativePath;
-  private File currentRelativePath;
+  private Path currentRelativePath;
 
   public FileClient(String ip, int port, String pw) throws IOException {
     this.ip = ip;
     this.port = port;
     this.pw = pw;
     // this.currentRelativePath = "";
-    this.currentRelativePath = null;
+    this.currentRelativePath = Paths.get("");
 
   }
 
@@ -45,17 +47,20 @@ public class FileClient {
     // }
     // System.out.println("client's current path: " + currentRelativePath);
 
-    if (currentRelativePath == null)
-      currentRelativePath = new File(path);
-    else {
-      currentRelativePath = new File(currentRelativePath.getPath() + "\\" + path);
+    // if (currentRelativePath == null)
+    //   currentRelativePath = new File(path);
+    // else {
+    //   currentRelativePath = new File(currentRelativePath.getPath() + "\\" + path);
+    // }
+    if (!Paths.get(currentRelativePath.toString(), path).normalize().startsWith("..")) {
+      currentRelativePath = Paths.get(currentRelativePath.toString(), path).normalize();
     }
 
 
 
     out.writeInt(002);
-    out.writeLong(currentRelativePath.getPath().length());
-    out.writeBytes(currentRelativePath.getPath());
+    out.writeLong(currentRelativePath.toString().length());
+    out.writeBytes(currentRelativePath.toString());
 
     return receiveFileList(in);
   }
