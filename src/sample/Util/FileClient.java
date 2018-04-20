@@ -129,7 +129,7 @@ public class FileClient {
 
 
     // It's a file
-    if (filecount == 0) {
+    if (filecount == -1) {
 
       byte[] buffer = new byte[1024];
       long count = 0, size;
@@ -156,6 +156,12 @@ public class FileClient {
 
     // It's a directory.
     else {
+      // handles empty directory
+      if (filecount==0){
+        File file = new File(topath + "/" + filepath);
+        file.getParentFile().mkdirs(); // Create any non-exist parent folder
+        file.mkdir();
+      }
       List<String> filenames = new ArrayList<>();
       for (long i = 0; i < filecount; i++) {
         String temp = filepath + "/" + receiveString(in);
@@ -195,7 +201,7 @@ public class FileClient {
     try {
       FileClient fileClient = new FileClient("192.168.56.1", 9001, "123");
       List<String> filenames = new ArrayList<>();
-      filenames.add("Installer");
+      filenames.add("folder2");
       fileClient.receiveFiles(filenames, "C:/Users/Vincent/Desktop/downloadFolder");
 
     } catch (IOException e) {

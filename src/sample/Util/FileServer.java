@@ -91,7 +91,7 @@ public class FileServer {
     if (file.isDirectory()) {
       sendFilenames(out, file.getCanonicalPath());
     } else {
-      out.writeLong(0);
+      out.writeLong(-1);
       FileInputStream in = new FileInputStream(file);
       byte[] buffer = new byte[1024];
       int len;
