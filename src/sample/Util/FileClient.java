@@ -134,9 +134,9 @@ public class FileClient {
       byte[] buffer = new byte[1024];
       long count = 0, size;
       int len;
-      File file = new File(topath + "\\" + filepath);
+      File file = new File(topath + "/" + filepath);
       file.getParentFile().mkdirs(); // Create any non-exist parent folder
-      FileOutputStream fout = new FileOutputStream(new File(topath + "\\" + filepath));
+      FileOutputStream fout = new FileOutputStream(new File(topath + "/" + filepath));
 
       // receive the size of the file
       size = in.readLong();
@@ -158,7 +158,7 @@ public class FileClient {
     else {
       List<String> filenames = new ArrayList<>();
       for (long i = 0; i < filecount; i++) {
-        String temp = filepath + "\\" + receiveString(in);
+        String temp = filepath + "/" + receiveString(in);
         filenames.add(temp);
       }
       receiveFiles(filenames, topath);
