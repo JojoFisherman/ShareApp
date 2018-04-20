@@ -46,7 +46,7 @@ public class clientSetupController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     fileClient = null;
     try {
-      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("../Views/connecting.fxml"));
+      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/sample/Views/connecting.fxml"));
       connectingPane = loader1.load();
 
       rootPane.getChildren().addAll(connectingPane);
@@ -119,7 +119,7 @@ public class clientSetupController implements Initializable {
           }
 
           connectingPane.setVisible(false);
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/clientMain.fxml"));
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Views/clientMain.fxml"));
           StackPane pane = null;
           try {
             pane = loader.load();

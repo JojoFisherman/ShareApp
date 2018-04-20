@@ -42,7 +42,7 @@ public class serverSetupController implements Initializable {
     dirPath = null;
 
     try {
-      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("../Views/serverMain.fxml"));
+      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/sample/Views/serverMain.fxml"));
       serverMainPane = loader1.load();
 
       rootPane.getChildren().addAll(serverMainPane);
@@ -111,13 +111,16 @@ public class serverSetupController implements Initializable {
       alert.showAndWait();
     }
     else {
-      new Thread(() -> {
+
+      Thread t = new Thread(() -> {
         try {
           fileServer = new FileServer(9001, dirPath, passwordfield_pw.getText());
         } catch (IOException e) {
           e.printStackTrace();
         }
-      }).start();
+      });
+      t.setDaemon(true);
+      t.start();
       changeServerMain();
 
 

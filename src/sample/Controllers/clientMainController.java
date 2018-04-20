@@ -59,6 +59,7 @@ public class clientMainController implements Initializable {
 
   private ObservableList<SFile> files = FXCollections.observableArrayList();
   private FileClient fileClient;
+  private String chooserpath = null;
 
   public void setFiles(ObservableList<SFile> files) {
     this.files = files;
@@ -90,8 +91,7 @@ public class clientMainController implements Initializable {
             } else {
               imageview.setImage(fileIcon);
             }
-          }
-          else {
+          } else {
             imageview.setImage(null);
           }
         }
@@ -105,14 +105,12 @@ public class clientMainController implements Initializable {
         public void updateItem(Number item, boolean empty) {
           if (item != null) {
             int value = item.intValue();
-            if (value >= Math.pow(1024,3)){
-              setText(String.format("%.2fGB", (float) value / Math.pow(1024,3)));
+            if (value >= Math.pow(1024, 3)) {
+              setText(String.format("%.2fGB", (float) value / Math.pow(1024, 3)));
 
-            }
-            else if (value >= Math.pow(1024,2)*10) {
-              setText(Integer.toString((int) Math.ceil((float) value / Math.pow(1024,2))) + "MB");
-            }
-            else {
+            } else if (value >= Math.pow(1024, 2) * 10) {
+              setText(Integer.toString((int) Math.ceil((float) value / Math.pow(1024, 2))) + "MB");
+            } else {
               setText(Integer.toString((int) Math.ceil((float) value / 1024)) + "KB");
             }
           } else {
@@ -132,15 +130,14 @@ public class clientMainController implements Initializable {
     table_files.setRoot(root);
     table_files.setShowRoot(false);
 
-
-    table_files.setRowFactory( e -> {
+    table_files.setRowFactory(e -> {
       TreeTableRow<SFile> row = new TreeTableRow<>();
       row.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+        if (event.getClickCount() == 2 && (!row.isEmpty())) {
           SFile rowData = row.getItem();
           String filename = rowData.getName();
           // System.out.println(rowData.getName());
-          if (rowData.getType().equals("d")){
+          if (rowData.getType().equals("d")) {
             try {
               ObservableList<SFile> files = fileClient.requestFileList(filename);
               this.setFiles(files);
@@ -162,13 +159,16 @@ public class clientMainController implements Initializable {
   @FXML
   private void downloadFiles() {
     String selectedDirectory = getFolder();
+    if (selectedDirectory == null) {
+      return;
+    }
 
     ObservableList<TreeItem<SFile>> selectedItems = table_files.getSelectionModel()
         .getSelectedItems();
     List<String> filenames = new ArrayList<>();
 
     for (TreeItem<SFile> temp : selectedItems) {
-      filenames.add(temp.getValue().getName());
+      filenames.add(fileClient.getPath() + "//" + temp.getValue().getName());
 
       try {
         fileClient.receiveFiles(filenames, selectedDirectory);
@@ -182,9 +182,16 @@ public class clientMainController implements Initializable {
 
   private String getFolder() {
     DirectoryChooser chooser = new DirectoryChooser();
+    if (chooserpath != null) {
+      chooser.setInitialDirectory(new File(chooserpath).getParentFile());
+    }
     chooser.setTitle("SHARE");
     File selectedDirectory = chooser.showDialog(rootPane.getScene().getWindow());
-    return selectedDirectory.getAbsolutePath();
+    if (selectedDirectory == null) {
+      return null;
+    }
+    chooserpath = selectedDirectory.getAbsolutePath();
+    return chooserpath;
   }
 
 

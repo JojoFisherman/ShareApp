@@ -23,7 +23,6 @@ public class FileServer {
       new Thread(() -> {
         try {
           doOperation(cSocket);
-          cSocket.close();
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -56,6 +55,7 @@ public class FileServer {
     }
     in.close();
     out.close();
+    socket.close();
   }
 
   private void authentication(DataInputStream in, DataOutputStream out) throws IOException {
@@ -68,7 +68,7 @@ public class FileServer {
   /**
    *
    * @param out
-   * @param path
+   * @param relativepath
    * @throws IOException
    */
   private void sendFileList(DataOutputStream out, String relativepath) throws IOException {
@@ -85,7 +85,28 @@ public class FileServer {
 
   }
 
-  private void sendFilenameList(DataOutputStream out, String path) throws IOException {
+  private void sendFile(DataOutputStream out, String filename) throws IOException {
+    File file = new File(path + "\\" + filename);
+    if (file.isDirectory()) {
+      sendFilenames(out, file.getCanonicalPath());
+    } else {
+      out.writeLong(0);
+      FileInputStream in = new FileInputStream(file);
+      byte[] buffer = new byte[1024];
+      int len;
+      long counter = 0;
+      long filesize = file.length();
+      out.writeLong(filesize);
+      while (counter < filesize) {
+        len = in.read(buffer, 0, buffer.length);
+        counter += len;
+        out.write(buffer, 0, len);
+        out.flush();
+      }
+    }
+  }
+
+  private void sendFilenames(DataOutputStream out, String path) throws IOException {
     // commandPrompt.changeDir(path);
     List<String> filenames = commandPrompt.listFiles(path, false);
     // write how many files
@@ -96,7 +117,6 @@ public class FileServer {
     }
 
   }
-
 
   private String receiveString(DataInputStream in) throws IOException {
     byte[] buffer = new byte[1024];
@@ -113,26 +133,7 @@ public class FileServer {
   }
 
 
-  private void sendFile(DataOutputStream out, String filename) throws IOException {
-    File file = new File(path + "\\" + filename);
-    if (file.isDirectory()) {
-      sendFilenameList(out, file.getCanonicalPath());
-    } else {
-      out.writeLong(-1);
-      FileInputStream in = new FileInputStream(file);
-      byte[] buffer = new byte[1024];
-      int len;
-      long counter = 0;
-      long filesize = file.length();
-      out.writeLong(filesize);
-      while (counter < filesize) {
-        len = in.read(buffer, 0, buffer.length);
-        counter += len;
-        out.write(buffer, 0, len);
-        out.flush();
-      }
-    }
-  }
+
 
   private boolean isPwCorrect(String inputPassword) {
     return inputPassword.equals(password);

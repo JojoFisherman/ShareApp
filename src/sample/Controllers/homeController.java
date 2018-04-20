@@ -20,7 +20,7 @@ public class homeController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     try {
-      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("../Views/clientSetup.fxml"));
+      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/sample/Views/clientSetup.fxml"));
       clientPane = loader1.load();
 
       rootPane.getChildren().addAll(clientPane);
@@ -36,7 +36,7 @@ public class homeController implements Initializable {
     }
 
     try {
-      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("../Views/serverSetup.fxml"));
+      FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/sample/Views/serverSetup.fxml"));
       serverPane = loader1.load();
 
       rootPane.getChildren().addAll(serverPane);

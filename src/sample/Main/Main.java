@@ -14,7 +14,7 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/mainLayout.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Views/mainLayout.fxml"));
     AnchorPane pane = loader.load();
     Scene scene = new Scene(pane);
     primaryStage.setScene(scene);
@@ -22,17 +22,10 @@ public class Main extends Application {
     primaryStage.getIcons().addAll(
         new Image("/sample/src/icon.jpg"));
     primaryStage.setResizable(false);
+
     primaryStage.show();
 
-    // FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/clientMain.fxml"));
-    // StackPane pane = loader.load();
-    // Scene scene = new Scene(pane);
-    // primaryStage.setScene(scene);
-    // primaryStage.setTitle("SHARE");
-    // primaryStage.getIcons().addAll(
-    //     new Image("/sample/src/icon.jpg"));
-    // primaryStage.setResizable(false);
-    // primaryStage.show();
+
   }
 
 

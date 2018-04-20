@@ -39,7 +39,7 @@ public class mainLayoutController implements Initializable {
     pane3.setStyle("-fx-background-image: url(\"/sample/src/3.jpg\")");
     pane4.setStyle("-fx-background-image: url(\"/sample/src/4.jpg\")");
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Views/home.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Views/home.fxml"));
     Pane pane = null;
     try {
        pane = loader.load();
