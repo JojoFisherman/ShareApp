@@ -3,6 +3,7 @@ package sample.Util;
 import java.io.*;
 import java.net.*;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.List;
 
 public class FileServer {
@@ -75,7 +76,7 @@ public class FileServer {
     // commandPrompt.changeDir(path);
 
 
-    List<String> files = commandPrompt.listFiles(path + "\\" + relativepath, true);
+    List<String> files = commandPrompt.listFiles(path + "/" + relativepath, true);
     // write how many files
     out.writeLong(files.size());
     for (String file : files) {
@@ -86,7 +87,7 @@ public class FileServer {
   }
 
   private void sendFile(DataOutputStream out, String filename) throws IOException {
-    File file = new File(path + "\\" + filename);
+    File file = new File(path + "/" + filename);
     if (file.isDirectory()) {
       sendFilenames(out, file.getCanonicalPath());
     } else {
@@ -143,6 +144,8 @@ public class FileServer {
   public static void main(String[] args) {
     try {
       FileServer fileServer = new FileServer(9001, "C:/Users/Vincent/Desktop/shareFolder", "123");
+
+
 
     } catch (IOException e) {
       e.printStackTrace();

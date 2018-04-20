@@ -168,7 +168,7 @@ public class clientMainController implements Initializable {
     List<String> filenames = new ArrayList<>();
 
     for (TreeItem<SFile> temp : selectedItems) {
-      filenames.add(fileClient.getPath() + "//" + temp.getValue().getName());
+      filenames.add(fileClient.getPath() + "/" + temp.getValue().getName());
 
       try {
         fileClient.receiveFiles(filenames, selectedDirectory);
